@@ -53,3 +53,29 @@ desc 'Retrieves the current schema version number'
 task "db:version" do
   puts "Current version: #{ActiveRecord::Migrator.current_version}"
 end
+
+desc "Create dummy data"
+task "db:dummy_data" do
+  50.times do |n|
+    Movie.create!({
+      title: "Movie Title #{n + 1}",
+      release_date: Date.today,
+      genre: ["comedy", "romance", "horror", "drama"].sample,
+      description: "All about Movie Title #{n + 1}"
+    })
+  end
+end
+
+desc "Export dummy data"
+task "db:export_data" do
+  require 'CSV'
+
+  [Movie].each do |klass|
+    CSV.open("#{klass.name.downcase.pluralize}.csv", "wb") do |csv|
+      csv << klass.column_names
+      klass.find_each do |p|
+        csv << klass.column_names.map{|c| p.send(c)}
+      end
+    end
+  end
+end
