@@ -3,6 +3,8 @@
 
 <ul>
   <% @movies.each do |movie| %>
-    <li><%= movie.title %></li>
+    <li>
+      <a href="/movies/<%= movie.id %>"><%= movie.title %></a>
+    </li>
   <% end %>
 </ul>
