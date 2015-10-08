@@ -1,11 +1,11 @@
 helpers do
   def logged_in?
-    session[:id]
+    session[:user_id]
   end
 
   def current_user
     if logged_in?
-      return User.find(session[:id])
+      return User.find(session[:user_id])
     end
   end
 end
@@ -37,11 +37,10 @@ post '/login' do
 
   # Did we find a user?
   # If found user... do the passwords match?
-
   if user && user.password == params[:password]
     # If a user was found and passwords match...
     # Log user in
-    session[:id] = user.id
+    session[:user_id] = user.id
 
     # send them to /movies page
     redirect "/movies"
@@ -67,7 +66,7 @@ post '/signup' do
   })
 
   # Log new user in
-  session[:id] = new_user.id
+  session[:user_id] = new_user.id
 
   # Send user to /movies
   redirect "/movies"
