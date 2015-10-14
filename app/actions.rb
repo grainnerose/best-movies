@@ -1,6 +1,10 @@
 helpers do
   def logged_in?
-    session[:user_id]
+    if session[:user_id].nil?
+      return false
+    else
+      return true
+    end
   end
 
   def current_user
@@ -20,9 +24,49 @@ get '/movies' do
   erb :movies
 end
 
+get '/movies/new' do
+  erb :new_movie
+end
+
+post '/movies/create' do
+  new_movie = Movie.create({
+    title: params[:title],
+    director: params[:director],
+    image_url: params[:image_url]
+  })
+
+  redirect "/movies/#{new_movie.id}"
+end
+
 get '/movies/:id' do
   @movie = Movie.find(params[:id])
   erb :movie
+end
+
+get '/movies/:movie_id/reviews/new' do
+  if !logged_in?
+    redirect "/login"
+  end
+
+  @movie = Movie.find(params[:movie_id])
+  erb :new_review
+end
+
+post '/movies/:movie_id/reviews/create' do
+
+  # find movie we are reviewing
+  @movie = Movie.find(params[:movie_id])
+
+  # receive user data/input
+  # create new review in database
+  @movie.reviews.create({
+    user_id: current_user.id,
+    score: params[:score],
+    comment: params[:comment]
+  })
+
+  # send user back to movie page
+  redirect "/movies/#{@movie.id}"
 end
 
 # Login Page

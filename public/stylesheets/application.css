@@ -63,3 +63,9 @@ button {
 button:hover {
   background-color: #CCC;
 }
+
+
+img {
+  max-width: 200px;
+  max-height: 200px;
+}

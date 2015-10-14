@@ -2,3 +2,16 @@
 <h2><%= @movie.director %></h2>
 
 <img src="<%= @movie.image_url %>">
+
+<br>
+<% if logged_in? %>
+  <a href="/movies/<%= @movie.id %>/reviews/new">Add Review</a>
+  <br>
+<% end %>
+
+<% @movie.reviews.each do |review| %>
+  <div>
+    <h3><%= review.user.username %>: <%= review.score %></h3>
+    <p><%= review.comment %></p>
+  </div>
+<% end %>

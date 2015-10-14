@@ -1,0 +1,7 @@
+<h1>Review for <%= @movie.title %></h1>
+
+<form method="post" action="/movies/<%= @movie.id %>/reviews/create">
+  <input type="number" name="score" placeholder="Enter movie score">
+  <textarea name="comment" placeholder="Enter review comment"></textarea>
+  <button type="submit">Save Review</button>
+</form>
